@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/github_users_nav_graph"
+    app:startDestination="@id/searchGithubUsersFragment">
+
+    <fragment
+        android:id="@+id/searchGithubUsersFragment"
+        android:name="com.zaen.githubuser.ui.fragments.SearchGithubUsersFragment"
+        android:label="fragment_search_github_users"
+        tools:layout="@layout/fragment_search_github_users" />
+</navigation>

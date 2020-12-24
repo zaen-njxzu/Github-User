@@ -22,40 +22,45 @@ class GithubUsersViewModel(
     val githubUsersRepository: GithubUsersRepository
 ) : AndroidViewModel(app) {
 
-    private val _searchGithubUsers = MutableLiveData<Resource<SearchGithubUsersResponse>>()
-    val searchGithubUsers: LiveData<Resource<SearchGithubUsersResponse>> = _searchGithubUsers
+    val searchGithubUsers: MutableLiveData<Resource<SearchGithubUsersResponse>> = MutableLiveData()
     var searchGithubUsersPage = 1
     var searchGithubUsersResponse: SearchGithubUsersResponse? = null
 
-    fun searchGithubUsers(searchQuery: String) = viewModelScope.launch {
-        _searchGithubUsers.postValue(Resource.Loading())
+    fun searchGithubUsers(searchQuery: String, isPagination: Boolean) = viewModelScope.launch {
+        searchGithubUsers.postValue(Resource.Loading())
         try {
             if(hasInternetConnection()) {
                 val response = githubUsersRepository.searchGithubUsers(searchQuery, searchGithubUsersPage)
-                _searchGithubUsers.postValue(handleSearchNewsResponse(response))
+                searchGithubUsers.postValue(handleSearchNewsResponse(response, isPagination))
             } else {
-                _searchGithubUsers.postValue(Resource.Error("No internet connection"))
+                searchGithubUsers.postValue(Resource.Error("No internet connection"))
             }
         } catch (t: Throwable) {
             when(t) {
-                is IOException -> _searchGithubUsers.postValue(Resource.Error("Network Failure"))
-                else -> _searchGithubUsers.postValue(Resource.Error("Conversion Error")) 
+                is IOException -> searchGithubUsers.postValue(Resource.Error("Network Failure"))
+                else -> searchGithubUsers.postValue(Resource.Error("Conversion Error"))
             }
         }
     }
 
-    private fun handleSearchNewsResponse(response: Response<SearchGithubUsersResponse>) : Resource<SearchGithubUsersResponse> {
+    private fun handleSearchNewsResponse(response: Response<SearchGithubUsersResponse>, isPagination: Boolean) : Resource<SearchGithubUsersResponse> {
         if(response.isSuccessful) {
             response.body()?.let { resultResponse ->
-                searchGithubUsersPage++
-                if (searchGithubUsersResponse == null) {
-                    searchGithubUsersResponse = resultResponse
-                } else {
-                    val oldArticles = searchGithubUsersResponse?.githubUserInfos
-                    val newArticles = resultResponse.githubUserInfos
-                    oldArticles?.addAll(newArticles)
+                if (isPagination == false) {
+                    searchGithubUsersPage = 1
+                    return Resource.Success(resultResponse)
                 }
-                return Resource.Success(searchGithubUsersResponse ?: resultResponse)
+                else {
+                    searchGithubUsersPage++
+                    if (searchGithubUsersResponse == null) {
+                        searchGithubUsersResponse = resultResponse
+                    } else {
+                        val oldArticles = searchGithubUsersResponse?.items
+                        val newArticles = resultResponse.items
+                        oldArticles?.addAll(newArticles)
+                    }
+                    return Resource.Success(searchGithubUsersResponse ?: resultResponse)
+                }
             }
         }
         return Resource.Error(response.message())
