@@ -6,4 +6,13 @@ class GithubUsersRepository {
 
     suspend fun searchGithubUsers(searchQuery: String, pageNumber: Int) =
         RetrofitInstance.api.searchGithubUsers(searchQuery, pageNumber)
+
+    suspend fun getDetailGithubUserByUsername(username: String) =
+        RetrofitInstance.api.getUserDetailByUsername(username)
+
+    suspend fun getGithubUserFollowers(username: String) =
+        RetrofitInstance.api.getFollowersUserData(username)
+
+    suspend fun getGithubUserFollowing(username: String) =
+        RetrofitInstance.api.getFollowingUserData(username)
 }

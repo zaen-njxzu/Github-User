@@ -9,5 +9,22 @@
         android:id="@+id/searchGithubUsersFragment"
         android:name="com.zaen.githubuser.ui.fragments.SearchGithubUsersFragment"
         android:label="fragment_search_github_users"
-        tools:layout="@layout/fragment_search_github_users" />
+        tools:layout="@layout/fragment_search_github_users" >
+        <action
+            android:id="@+id/action_searchGithubUsersFragment_to_githubDetailUserFragment"
+            app:destination="@id/githubDetailUserFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/githubDetailUserFragment"
+        android:name="com.zaen.githubuser.ui.fragments.GithubDetailUserFragment"
+        android:label="fragment_github_detail_user"
+        tools:layout="@layout/fragment_github_detail_user" >
+        <argument
+            android:name="github_user_info"
+            app:argType="com.zaen.githubuser.models.GithubUserInfo" />
+    </fragment>
 </navigation>

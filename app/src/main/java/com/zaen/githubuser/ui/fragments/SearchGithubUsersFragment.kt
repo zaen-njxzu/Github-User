@@ -6,8 +6,8 @@ import android.widget.AbsListView
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zaen.githubuser.R
@@ -15,7 +15,7 @@ import com.zaen.githubuser.adapters.GithubUsersAdapter
 import com.zaen.githubuser.ui.GithubUsersActivity
 import com.zaen.githubuser.ui.GithubUsersViewModel
 import com.zaen.githubuser.util.Constants.Companion.QUERY_PAGE_SIZE
-import com.zaen.githubuser.util.Constants.Companion.SEARCH_NEWS_TIME_DELAY
+import com.zaen.githubuser.util.Constants.Companion.SEARCH_GITHUB_USERS_TIME_DELAY
 import com.zaen.githubuser.util.Resource
 import kotlinx.android.synthetic.main.fragment_search_github_users.*
 import kotlinx.coroutines.Job
@@ -37,6 +37,7 @@ class SearchGithubUsersFragment : Fragment(R.layout.fragment_search_github_users
         githubUsersViewModel = (activity as GithubUsersActivity).githubUsersViewModel
 
         setupRecycleView()
+        setupOnClickGithubUserListener()
         setupUsernameListenerWithFetchData()
         observeAndUpdateListOfGithubUsers()
 
@@ -74,7 +75,7 @@ class SearchGithubUsersFragment : Fragment(R.layout.fragment_search_github_users
         etSearch.addTextChangedListener { editable ->
             job?.cancel()
             job = MainScope().launch {
-                delay(SEARCH_NEWS_TIME_DELAY)
+                delay(SEARCH_GITHUB_USERS_TIME_DELAY)
                 editable?.let {
                     if(editable.toString().isNotEmpty()) {
                         githubUsersViewModel.searchGithubUsers(editable.toString(), false)
@@ -124,6 +125,21 @@ class SearchGithubUsersFragment : Fragment(R.layout.fragment_search_github_users
             if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
                 isScolling = true
             }
+        }
+    }
+
+    private fun setupOnClickGithubUserListener() {
+        githubUsersInfoAdapter.setOnItemClickListener {
+            githubUsersViewModel.followersGithubUser.postValue(null)
+            githubUsersViewModel.followingsGithubUser.postValue(null)
+
+            val bundle = Bundle().apply {
+                putSerializable("github_user_info", it)
+            }
+            findNavController().navigate(
+                R.id.action_searchGithubUsersFragment_to_githubDetailUserFragment,
+                bundle
+            )
         }
     }
 
