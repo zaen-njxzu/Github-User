@@ -48,7 +48,7 @@ class SearchGithubUsersFragment : Fragment(R.layout.fragment_search_github_users
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { githubUsersResponse ->
-                        githubUsersInfoAdapter.differ.submitList(githubUsersResponse.items)
+                        githubUsersInfoAdapter.differ.submitList(githubUsersResponse.items.toList())
                         val totalPages = githubUsersResponse.total_count / QUERY_PAGE_SIZE + 2
                         isLastPage = githubUsersViewModel.searchGithubUsersPage == totalPages
                         if(isLastPage) {
