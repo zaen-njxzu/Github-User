@@ -189,7 +189,7 @@
         android:elevation="1dp"
         app:behavior_peekHeight="250dp"
         android:id="@+id/filter_fragment"
-        android:name="com.zaen.githubuser.ui.fragments.WindowFragment"
+        android:name="com.zaen.githubuser.ui.fragments.WindowFollowFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
