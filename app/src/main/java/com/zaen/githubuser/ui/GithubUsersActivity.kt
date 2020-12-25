@@ -3,7 +3,6 @@ package com.zaen.githubuser.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuInflater
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.zaen.githubuser.R
@@ -17,6 +16,8 @@ class GithubUsersActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_github_users)
+
+        setSupportActionBar(topAppBar)
 
         val repository = UsersRepository()
         val githubUsersViewModelProviderFactory = GithubUsersViewModelProviderFactory(application, repository)
@@ -35,6 +36,15 @@ class GithubUsersActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.top_app_bar, menu)
+
+        super.onCreateOptionsMenu(menu)
+        return true
     }
 
 }

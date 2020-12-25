@@ -2,7 +2,6 @@ package com.zaen.githubuser.ui.fragments
 
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.widget.AbsListView
 import android.widget.Toast
@@ -33,6 +32,7 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
 
         usersViewModel = (activity as GithubUsersActivity).usersViewModel
 
@@ -40,12 +40,11 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
         setupOnClickUserDetailsListener()
         setupUsernameListenerWithFetchData()
         observeAndUpdateListOfUsers()
-
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        menu.findItem(R.id.action_favorite).setVisible(true)
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.action_favorite).isVisible = true
+        super.onPrepareOptionsMenu(menu)
     }
 
     private fun observeAndUpdateListOfUsers() {
