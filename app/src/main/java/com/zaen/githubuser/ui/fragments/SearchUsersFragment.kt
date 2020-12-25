@@ -18,6 +18,7 @@ import com.zaen.githubuser.ui.GithubUsersViewModel
 import com.zaen.githubuser.util.Constants.Companion.QUERY_PAGE_SIZE
 import com.zaen.githubuser.util.Constants.Companion.SEARCH_GITHUB_USERS_TIME_DELAY
 import com.zaen.githubuser.util.Resource
+import kotlinx.android.synthetic.main.activity_github_users.*
 import kotlinx.android.synthetic.main.fragment_search_users.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
@@ -36,15 +37,33 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
 
         usersViewModel = (activity as GithubUsersActivity).usersViewModel
 
+        setupTitleTopbar()
         setupRecycleView()
         setupOnClickUserDetailsListener()
         setupUsernameListenerWithFetchData()
         observeAndUpdateListOfUsers()
+        setOnClickMenuItemListener()
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.findItem(R.id.action_favorite).isVisible = true
         super.onPrepareOptionsMenu(menu)
+    }
+
+    private fun setupTitleTopbar() {
+        activity?.topAppBar?.title = "Github Users"
+    }
+
+    private fun setOnClickMenuItemListener() {
+        activity?.topAppBar?.setOnMenuItemClickListener { menuItem ->
+            when(menuItem.itemId) {
+                R.id.action_favorite -> {
+                    findNavController().navigate(R.id.action_searchGithubUsersFragment_to_savedUsersFragment)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun observeAndUpdateListOfUsers() {

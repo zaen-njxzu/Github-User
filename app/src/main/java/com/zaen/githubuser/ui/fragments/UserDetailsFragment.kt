@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.zaen.githubuser.R
 import com.zaen.githubuser.adapters.FollowAdapter
@@ -14,6 +15,7 @@ import com.zaen.githubuser.ui.GithubUsersActivity
 import com.zaen.githubuser.ui.GithubUsersViewModel
 import com.zaen.githubuser.util.FollowStates
 import com.zaen.githubuser.util.Resource
+import kotlinx.android.synthetic.main.activity_github_users.*
 import kotlinx.android.synthetic.main.fragment_user_details.*
 import kotlinx.android.synthetic.main.fragment_window_follow.*
 import kotlinx.coroutines.Dispatchers
@@ -32,9 +34,19 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
 
         usersViewModel = (activity as GithubUsersActivity).usersViewModel
 
+        fab.setOnClickListener {
+            usersViewModel.saveFavoriteUser(args.userInfo)
+            Snackbar.make(view, "User favorite saved successfully", Snackbar.LENGTH_SHORT).show()
+        }
+
+        setupTitleTopbar()
         observeAndUpdateUserDetails()
         getUserDetails()
         attachTabLayout()
+    }
+
+    private fun setupTitleTopbar() {
+        activity?.topAppBar?.title = "Detail User"
     }
 
     private fun attachTabLayout() {

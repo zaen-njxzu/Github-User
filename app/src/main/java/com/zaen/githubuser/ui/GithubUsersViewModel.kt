@@ -12,6 +12,7 @@ import com.zaen.githubuser.GithubUsersApplication
 import com.zaen.githubuser.models.UserDetailsResponse
 import com.zaen.githubuser.models.FollowUserResponse
 import com.zaen.githubuser.models.SearchUsersResponse
+import com.zaen.githubuser.models.UserInfo
 import com.zaen.githubuser.repository.UsersRepository
 import com.zaen.githubuser.util.Resource
 import kotlinx.coroutines.launch
@@ -30,6 +31,16 @@ class GithubUsersViewModel(
     val userDetails: MutableLiveData<Resource<UserDetailsResponse>> = MutableLiveData()
     val followersUserData: MutableLiveData<Resource<FollowUserResponse>> = MutableLiveData()
     val followingsUserData: MutableLiveData<Resource<FollowUserResponse>> = MutableLiveData()
+
+    fun saveFavoriteUser(userInfo: UserInfo) = viewModelScope.launch {
+        usersRepository.upsert(userInfo)
+    }
+
+    fun getFavoriteUsers() = usersRepository.getFavoriteUsers()
+
+    fun deleteFavoriteUser(userInfo: UserInfo) = viewModelScope.launch {
+        usersRepository.deleteFavoriteUser(userInfo)
+    }
 
     fun getFollowersUserData(username: String) = viewModelScope.launch {
         followingsUserData.postValue(Resource.Loading())

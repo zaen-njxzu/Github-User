@@ -17,6 +17,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_searchGithubUsersFragment_to_savedUsersFragment"
+            app:destination="@id/savedUsersFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/githubDetailUserFragment"
@@ -26,5 +33,18 @@
         <argument
             android:name="user_info"
             app:argType="com.zaen.githubuser.models.UserInfo" />
+    </fragment>
+    <fragment
+        android:id="@+id/savedUsersFragment"
+        android:name="com.zaen.githubuser.ui.fragments.FavoriteUsersFragment"
+        android:label="fragment_saved_users"
+        tools:layout="@layout/fragment_favorite_users" >
+        <action
+            android:id="@+id/action_savedUsersFragment_to_githubDetailUserFragment"
+            app:destination="@id/githubDetailUserFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 </navigation>

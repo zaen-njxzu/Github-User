@@ -6,6 +6,7 @@ import android.view.Menu
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.zaen.githubuser.R
+import com.zaen.githubuser.db.UserInfoDatabase
 import com.zaen.githubuser.repository.UsersRepository
 import kotlinx.android.synthetic.main.activity_github_users.*
 
@@ -19,16 +20,12 @@ class GithubUsersActivity : AppCompatActivity() {
 
         setSupportActionBar(topAppBar)
 
-        val repository = UsersRepository()
+        val repository = UsersRepository(UserInfoDatabase(this))
         val githubUsersViewModelProviderFactory = GithubUsersViewModelProviderFactory(application, repository)
         usersViewModel = ViewModelProvider(this, githubUsersViewModelProviderFactory).get(GithubUsersViewModel::class.java)
 
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when(menuItem.itemId) {
-                R.id.action_favorite -> {
-                    Toast.makeText(this, "Action favorite pressed!", Toast.LENGTH_SHORT).show()
-                    true
-                }
                 R.id.action_settings -> {
                     Toast.makeText(this, "Action setting pressed!", Toast.LENGTH_SHORT).show()
                     true
