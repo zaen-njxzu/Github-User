@@ -1,6 +1,8 @@
 package com.zaen.githubuser.ui.fragments
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.widget.AbsListView
 import android.widget.Toast
@@ -39,6 +41,11 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
         setupUsernameListenerWithFetchData()
         observeAndUpdateListOfUsers()
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.findItem(R.id.action_favorite).setVisible(true)
     }
 
     private fun observeAndUpdateListOfUsers() {

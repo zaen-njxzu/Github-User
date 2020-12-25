@@ -15,6 +15,7 @@ import com.zaen.githubuser.ui.GithubUsersViewModel
 import com.zaen.githubuser.util.FollowStates
 import com.zaen.githubuser.util.Resource
 import kotlinx.android.synthetic.main.fragment_user_details.*
+import kotlinx.android.synthetic.main.fragment_window.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -104,4 +105,5 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
         }
         return this
     }
+
 }
