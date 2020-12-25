@@ -1,14 +1,19 @@
 package com.zaen.githubuser.ui
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.Menu
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.zaen.githubuser.R
 import com.zaen.githubuser.db.UserInfoDatabase
 import com.zaen.githubuser.repository.UsersRepository
+import com.zaen.githubuser.util.AlarmReceiver
+import com.zaen.githubuser.util.Constants.Companion.PREFS_NAME
 import kotlinx.android.synthetic.main.activity_github_users.*
+
 
 class GithubUsersActivity : AppCompatActivity() {
 
@@ -19,6 +24,7 @@ class GithubUsersActivity : AppCompatActivity() {
         setContentView(R.layout.activity_github_users)
 
         setSupportActionBar(topAppBar)
+        runOnetimeCodeExecution()
 
         val repository = UsersRepository(UserInfoDatabase(this))
         val githubUsersViewModelProviderFactory = GithubUsersViewModelProviderFactory(application, repository)
@@ -34,7 +40,6 @@ class GithubUsersActivity : AppCompatActivity() {
             }
         }
 
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -42,6 +47,19 @@ class GithubUsersActivity : AppCompatActivity() {
 
         super.onCreateOptionsMenu(menu)
         return true
+    }
+
+    fun runOnetimeCodeExecution() {
+        val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        if (!prefs.getBoolean("firstTime", false)) {
+
+            val alarmReceiver = AlarmReceiver()
+            alarmReceiver.setRepeatingAlarmOn9AM(this)
+
+            val editor = prefs.edit()
+            editor.putBoolean("firstTime", true)
+            editor.commit()
+        }
     }
 
 }

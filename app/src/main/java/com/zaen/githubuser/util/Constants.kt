@@ -6,5 +6,6 @@ class Constants {
         const val QUERY_PAGE_SIZE = 20
         const val FOLLOW_ARG_OBJECT = "follow_object"
         const val FOLLOW_ARG_OBJECT_USERNAME = "follow_object_username"
+        const val PREFS_NAME = "user_pref"
     }
 }
