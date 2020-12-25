@@ -1,29 +1,25 @@
 package com.zaen.githubuser.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.zaen.githubuser.util.Constants
 import com.zaen.githubuser.util.Resource
-import kotlinx.android.synthetic.main.fragment_github_follow.*
+import kotlinx.android.synthetic.main.fragment_base_follow.*
 
-class GithubFollowersFragment : BaseGithubFollowFragment() {
-
-    private val TAG = "GithubFollowersFragment"
+class FollowingsFragment : BaseFollowFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        observeAndUpdateFollowersUser()
+        observeAndUpdateFollowingUser()
 
         arguments?.takeIf { it.containsKey(Constants.FOLLOW_ARG_OBJECT_USERNAME) }?.apply {
             val username = getString(Constants.FOLLOW_ARG_OBJECT_USERNAME)
 
             username?.let {
-                Log.e(TAG, "Followers ${it}")
-                githubUsersViewModel.getFollowersGithubUser(it)
+                usersViewModel.getFollowingsUserData(it)
             }
         }
     }
@@ -36,13 +32,13 @@ class GithubFollowersFragment : BaseGithubFollowFragment() {
         progressBar.visibility = View.VISIBLE
     }
 
-    private fun observeAndUpdateFollowersUser() {
-        githubUsersViewModel.followersGithubUser.observe(viewLifecycleOwner, Observer { response ->
+    private fun observeAndUpdateFollowingUser() {
+        usersViewModel.followingsUserData.observe(viewLifecycleOwner, Observer { response ->
             when(response) {
                 is Resource.Success -> {
                     hideProgressBar()
-                    response.data?.let { githubUsersResponse ->
-                        followAdapter.differ.submitList(githubUsersResponse.toList())
+                    response.data?.let { usersResponse ->
+                        followAdapter.differ.submitList(usersResponse.toList())
                     }
                 }
                 is Resource.Error -> {

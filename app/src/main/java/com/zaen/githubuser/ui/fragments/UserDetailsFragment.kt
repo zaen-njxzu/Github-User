@@ -9,38 +9,36 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import com.zaen.githubuser.R
-import com.zaen.githubuser.adapters.GithubFollowAdapter
+import com.zaen.githubuser.adapters.FollowAdapter
 import com.zaen.githubuser.ui.GithubUsersActivity
 import com.zaen.githubuser.ui.GithubUsersViewModel
 import com.zaen.githubuser.util.FollowStates
 import com.zaen.githubuser.util.Resource
-import kotlinx.android.synthetic.main.fragment_github_detail_user.*
+import kotlinx.android.synthetic.main.fragment_user_details.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.text.ParseException
 import java.text.SimpleDateFormat
 
-class GithubDetailUserFragment : Fragment(R.layout.fragment_github_detail_user) {
+class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
 
-    lateinit private var githubUsersViewModel: GithubUsersViewModel
-    private val args: GithubDetailUserFragmentArgs by navArgs()
-
-    private val TAG = "GithubDetailUserFragment"
+    lateinit private var usersViewModel: GithubUsersViewModel
+    private val args: UserDetailsFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        githubUsersViewModel = (activity as GithubUsersActivity).githubUsersViewModel
+        usersViewModel = (activity as GithubUsersActivity).usersViewModel
 
-        observeAndUpdateDetailGithubUser()
-        getDetailGithubUser()
+        observeAndUpdateUserDetails()
+        getUserDetails()
         attachTabLayout()
     }
 
     private fun attachTabLayout() {
         val screensCount = 2
-        pager.adapter = GithubFollowAdapter(this, screensCount, args.githubUserInfo.login)
+        pager.adapter = FollowAdapter(this, screensCount, args.userInfo.username)
         pager.offscreenPageLimit = screensCount
         pager.currentItem = 0
 
@@ -53,9 +51,9 @@ class GithubDetailUserFragment : Fragment(R.layout.fragment_github_detail_user) 
         }.attach()
     }
 
-    private fun getDetailGithubUser() {
-        val githubUserInfo = args.githubUserInfo
-        githubUsersViewModel.getDetailGithubUserByUsername(githubUserInfo.login)
+    private fun getUserDetails() {
+        val userInfo = args.userInfo
+        usersViewModel.getUserDetails(userInfo.username)
     }
 
     private fun hideProgressBar() {
@@ -66,19 +64,19 @@ class GithubDetailUserFragment : Fragment(R.layout.fragment_github_detail_user) 
         progressBar.visibility = View.VISIBLE
     }
 
-    private fun observeAndUpdateDetailGithubUser() {
-        githubUsersViewModel.detailGithubUser.observe(viewLifecycleOwner, Observer { response ->
+    private fun observeAndUpdateUserDetails() {
+        usersViewModel.userDetails.observe(viewLifecycleOwner, Observer { response ->
             when(response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { userInfo ->
                         MainScope().launch(Dispatchers.Main) {
-                            tvUsername.text = userInfo.login
+                            tvUsername.text = userInfo.username
                             tvName.text = userInfo.name
-                            tvGithubLink.text = userInfo.html_url
+                            tvGithubLink.text = userInfo.user_gihub_url
                             tvRepos.text = userInfo.public_repos.toString()
                             tvCreatedAt.text = userInfo.created_at.toDateString()
-                            Glide.with(this@GithubDetailUserFragment).load(userInfo.avatar_url).into(ivProfileImage)
+                            Glide.with(this@UserDetailsFragment).load(userInfo.profile_image_url).into(ivProfileImage)
                         }
                     }
                 }

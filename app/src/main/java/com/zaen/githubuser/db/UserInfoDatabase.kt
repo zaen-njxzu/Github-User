@@ -4,19 +4,19 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.zaen.githubuser.models.GithubUserInfo
+import com.zaen.githubuser.models.UserInfo
 
 @Database(
-    entities = [GithubUserInfo::class],
+    entities = [UserInfo::class],
     version = 1
 )
-abstract class GithubUserInfoDatabase : RoomDatabase() {
+abstract class UserInfoDatabase : RoomDatabase() {
 
-    abstract fun getGithubUserInfoDao() : GithubUserInfoDao
+    abstract fun getUserInfoDao() : UserInfoDao
 
     companion object {
         @Volatile
-        private var instance: GithubUserInfoDatabase? = null
+        private var instance: UserInfoDatabase? = null
         private val LOCK = Any()
 
         operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
@@ -26,8 +26,8 @@ abstract class GithubUserInfoDatabase : RoomDatabase() {
         private fun createDatabase(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext,
-                GithubUserInfoDatabase::class.java,
-                "github_user_info_db.db"
+                UserInfoDatabase::class.java,
+                "user_info_db.db"
             )
                 .fallbackToDestructiveMigration()
                 .build()

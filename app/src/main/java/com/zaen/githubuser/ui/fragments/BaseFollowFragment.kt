@@ -1,33 +1,30 @@
 package com.zaen.githubuser.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zaen.githubuser.R
-import com.zaen.githubuser.adapters.GithubUsersAdapter
+import com.zaen.githubuser.adapters.UsersAdapter
 import com.zaen.githubuser.ui.GithubUsersActivity
 import com.zaen.githubuser.ui.GithubUsersViewModel
-import kotlinx.android.synthetic.main.fragment_github_follow.*
+import kotlinx.android.synthetic.main.fragment_base_follow.*
 
-open class BaseGithubFollowFragment : Fragment(R.layout.fragment_github_follow) {
+open class BaseFollowFragment : Fragment(R.layout.fragment_base_follow) {
 
-    lateinit protected var githubUsersViewModel: GithubUsersViewModel
-    lateinit protected var followAdapter: GithubUsersAdapter
-
-    private val TAG = "GithubFollowFragment"
+    lateinit protected var usersViewModel: GithubUsersViewModel
+    lateinit protected var followAdapter: UsersAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        githubUsersViewModel = (activity as GithubUsersActivity).githubUsersViewModel
+        usersViewModel = (activity as GithubUsersActivity).usersViewModel
         setupRecycleView()
 
     }
 
     private fun setupRecycleView() {
-        followAdapter = GithubUsersAdapter()
+        followAdapter = UsersAdapter()
         rvFollowUser.apply {
             adapter = followAdapter
             layoutManager = LinearLayoutManager(activity)

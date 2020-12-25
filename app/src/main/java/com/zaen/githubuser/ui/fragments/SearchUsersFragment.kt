@@ -11,49 +11,47 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zaen.githubuser.R
-import com.zaen.githubuser.adapters.GithubUsersAdapter
+import com.zaen.githubuser.adapters.UsersAdapter
 import com.zaen.githubuser.ui.GithubUsersActivity
 import com.zaen.githubuser.ui.GithubUsersViewModel
 import com.zaen.githubuser.util.Constants.Companion.QUERY_PAGE_SIZE
 import com.zaen.githubuser.util.Constants.Companion.SEARCH_GITHUB_USERS_TIME_DELAY
 import com.zaen.githubuser.util.Resource
-import kotlinx.android.synthetic.main.fragment_search_github_users.*
+import kotlinx.android.synthetic.main.fragment_search_users.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class SearchGithubUsersFragment : Fragment(R.layout.fragment_search_github_users) {
+class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
 
-    lateinit private var githubUsersViewModel: GithubUsersViewModel
-    lateinit private var githubUsersInfoAdapter: GithubUsersAdapter
-
-    private val TAG = "SearchGithubUsersFragment"
+    lateinit private var usersViewModel: GithubUsersViewModel
+    lateinit private var usersInfoAdapter: UsersAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        githubUsersViewModel = (activity as GithubUsersActivity).githubUsersViewModel
+        usersViewModel = (activity as GithubUsersActivity).usersViewModel
 
         setupRecycleView()
-        setupOnClickGithubUserListener()
+        setupOnClickUserDetailsListener()
         setupUsernameListenerWithFetchData()
-        observeAndUpdateListOfGithubUsers()
+        observeAndUpdateListOfUsers()
 
     }
 
-    private fun observeAndUpdateListOfGithubUsers() {
-        githubUsersViewModel.searchGithubUsers.observe(viewLifecycleOwner, Observer { response ->
+    private fun observeAndUpdateListOfUsers() {
+        usersViewModel.searchUsers.observe(viewLifecycleOwner, Observer { response ->
             when(response) {
                 is Resource.Success -> {
                     hideProgressBar()
-                    response.data?.let { githubUsersResponse ->
-                        githubUsersInfoAdapter.differ.submitList(githubUsersResponse.items.toList())
-                        val totalPages = githubUsersResponse.total_count / QUERY_PAGE_SIZE + 2
-                        isLastPage = githubUsersViewModel.searchGithubUsersPage == totalPages
+                    response.data?.let { usersResponse ->
+                        usersInfoAdapter.differ.submitList(usersResponse.users_info.toList())
+                        val totalPages = usersResponse.total_count / QUERY_PAGE_SIZE + 2
+                        isLastPage = usersViewModel.searchUsersPage == totalPages
                         if(isLastPage) {
-                            rvGithubUsers.setPadding(0, 0, 0, 0)
+                            rvUsers.setPadding(0, 0, 0, 0)
                         }
                     }
                 }
@@ -78,7 +76,7 @@ class SearchGithubUsersFragment : Fragment(R.layout.fragment_search_github_users
                 delay(SEARCH_GITHUB_USERS_TIME_DELAY)
                 editable?.let {
                     if(editable.toString().isNotEmpty()) {
-                        githubUsersViewModel.searchGithubUsers(editable.toString(), false)
+                        usersViewModel.searchUsers(editable.toString(), false)
                     }
                 }
             }
@@ -115,7 +113,7 @@ class SearchGithubUsersFragment : Fragment(R.layout.fragment_search_github_users
             val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning && isTotalMoreThanVisible && isScolling
 
             if(shouldPaginate) {
-                githubUsersViewModel.searchGithubUsers(etSearch.text.toString(), true)
+                usersViewModel.searchUsers(etSearch.text.toString(), true)
                 isScolling = false
             }
         }
@@ -128,13 +126,13 @@ class SearchGithubUsersFragment : Fragment(R.layout.fragment_search_github_users
         }
     }
 
-    private fun setupOnClickGithubUserListener() {
-        githubUsersInfoAdapter.setOnItemClickListener {
-            githubUsersViewModel.followersGithubUser.postValue(null)
-            githubUsersViewModel.followingsGithubUser.postValue(null)
+    private fun setupOnClickUserDetailsListener() {
+        usersInfoAdapter.setOnItemClickListener {
+            usersViewModel.followersUserData.postValue(null)
+            usersViewModel.followingsUserData.postValue(null)
 
             val bundle = Bundle().apply {
-                putSerializable("github_user_info", it)
+                putSerializable("user_info", it)
             }
             findNavController().navigate(
                 R.id.action_searchGithubUsersFragment_to_githubDetailUserFragment,
@@ -144,11 +142,11 @@ class SearchGithubUsersFragment : Fragment(R.layout.fragment_search_github_users
     }
 
     private fun setupRecycleView() {
-        githubUsersInfoAdapter = GithubUsersAdapter()
-        rvGithubUsers.apply {
-            adapter = githubUsersInfoAdapter
+        usersInfoAdapter = UsersAdapter()
+        rvUsers.apply {
+            adapter = usersInfoAdapter
             layoutManager = LinearLayoutManager(activity)
-            addOnScrollListener(this@SearchGithubUsersFragment.scrollListener)
+            addOnScrollListener(this@SearchUsersFragment.scrollListener)
         }
     }
 

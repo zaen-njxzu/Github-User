@@ -1,9 +1,9 @@
 package com.zaen.githubuser.api
 
 import com.zaen.githubuser.BuildConfig
-import com.zaen.githubuser.models.DetailGithubUserResponse
+import com.zaen.githubuser.models.UserDetailsResponse
 import com.zaen.githubuser.models.FollowUserResponse
-import com.zaen.githubuser.models.SearchGithubUsersResponse
+import com.zaen.githubuser.models.SearchUsersResponse
 import com.zaen.githubuser.util.Constants.Companion.QUERY_PAGE_SIZE
 import retrofit2.Response
 import retrofit2.http.GET
@@ -11,27 +11,27 @@ import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface GithubUsersAPI {
+interface UsersAPI {
 
     @GET("search/users")
-    suspend fun searchGithubUsers(
+    suspend fun searchUsers(
         @Query("q")
-        searchQuery: String,
+        usernameQuery: String,
         @Query("page")
         pageNumber: Int,
         @Query("per_page")
         resultPerPage: Int = QUERY_PAGE_SIZE,
         @Header("Authorization")
         token: String = BuildConfig.GITHUB_API_KEY
-    ) : Response<SearchGithubUsersResponse>
+    ) : Response<SearchUsersResponse>
 
     @GET("users/{username}")
-    suspend fun getUserDetailByUsername(
+    suspend fun getUserDetails(
         @Path("username")
         username: String,
         @Header("Authorization")
         token: String = BuildConfig.GITHUB_API_KEY
-    ) : Response<DetailGithubUserResponse>
+    ) : Response<UserDetailsResponse>
 
     @GET("users/{username}/followers")
     suspend fun getFollowersUserData(
@@ -42,7 +42,7 @@ interface GithubUsersAPI {
     ) : Response<FollowUserResponse>
 
     @GET("users/{username}/following")
-    suspend fun getFollowingUserData(
+    suspend fun getFollowingsUserData(
         @Path("username")
         username: String,
         @Header("Authorization")
