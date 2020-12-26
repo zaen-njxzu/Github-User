@@ -1,9 +1,13 @@
 package com.zaen.githubuser.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.AbsListView
+import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -42,7 +46,6 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
         setupOnClickUserDetailsListener()
         setupUsernameListenerWithFetchData()
         observeAndUpdateListOfUsers()
-        setOnClickMenuItemListener()
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
@@ -52,18 +55,6 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
 
     private fun setupTitleTopbar() {
         activity?.topAppBar?.title = "Github Users"
-    }
-
-    private fun setOnClickMenuItemListener() {
-        activity?.topAppBar?.setOnMenuItemClickListener { menuItem ->
-            when(menuItem.itemId) {
-                R.id.action_favorite -> {
-                    findNavController().navigate(R.id.action_searchGithubUsersFragment_to_savedUsersFragment)
-                    true
-                }
-                else -> false
-            }
-        }
     }
 
     private fun observeAndUpdateListOfUsers() {
@@ -93,8 +84,25 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
         })
     }
 
+    private fun hideSoftKeyboard() {
+        context?.apply {
+            val inputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            view?.apply {
+                inputMethodManager.hideSoftInputFromWindow(this.windowToken, 0);
+            }
+        }
+    }
+
     private fun setupUsernameListenerWithFetchData() {
         var job: Job? = null
+        etSearch.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                hideSoftKeyboard()
+                return@OnEditorActionListener true
+            }
+            false
+        })
+
         etSearch.addTextChangedListener { editable ->
             job?.cancel()
             job = MainScope().launch {
@@ -146,6 +154,7 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                hideSoftKeyboard()
                 isScolling = true
             }
         }
@@ -153,6 +162,11 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
 
     private fun setupOnClickUserDetailsListener() {
         usersInfoAdapter.setOnItemClickListener {
+            hideSoftKeyboard()
+
+            /*
+            * Clear out previous data load on User Details
+            * */
             usersViewModel.followersUserData.postValue(null)
             usersViewModel.followingsUserData.postValue(null)
 

@@ -94,6 +94,12 @@ class GithubUsersViewModel(
     }
 
     fun searchUsers(usernameQuery: String, isPagination: Boolean) = viewModelScope.launch {
+        if(!isPagination) {
+            searchUsersPage = 1
+            searchUsers.postValue(null)
+            searchUsersResponse = null
+        }
+
         searchUsers.postValue(Resource.Loading())
         try {
             if(hasInternetConnection()) {
@@ -122,20 +128,16 @@ class GithubUsersViewModel(
     private fun handleSearchUsersResponse(response: Response<SearchUsersResponse>, isPagination: Boolean) : Resource<SearchUsersResponse> {
         if(response.isSuccessful) {
             response.body()?.let { resultResponse ->
-                if (isPagination == false) {
-                    searchUsersPage = 1
-                    return Resource.Success(resultResponse)
-                }
-                else {
-                    searchUsersPage++
-                    if (searchUsersResponse == null) {
-                        searchUsersResponse = resultResponse
-                    } else {
-                        val oldArticles = searchUsersResponse?.users_info
-                        val newArticles = resultResponse.users_info
-                        oldArticles?.addAll(newArticles)
-                    }
+                searchUsersPage++
+                if(searchUsersResponse == null) searchUsersResponse = resultResponse
+
+                if (isPagination) {
+                    val oldUsersInfo = searchUsersResponse?.users_info
+                    val newUsersInfo = resultResponse.users_info
+                    oldUsersInfo?.addAll(newUsersInfo)
                     return Resource.Success(searchUsersResponse ?: resultResponse)
+                } else {
+                    return Resource.Success(resultResponse)
                 }
             }
         }

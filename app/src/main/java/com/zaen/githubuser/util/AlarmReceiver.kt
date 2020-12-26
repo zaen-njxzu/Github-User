@@ -92,7 +92,6 @@ class AlarmReceiver : BroadcastReceiver() {
     }
 
     fun setRepeatingAlarmOn9AM(context: Context) {
-        cancelAlarm(context, TYPE_REPEATING)
         val calendar: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
             set(Calendar.HOUR_OF_DAY, 9)

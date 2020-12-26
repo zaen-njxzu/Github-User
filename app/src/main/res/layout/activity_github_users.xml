@@ -35,7 +35,7 @@
         app:layout_constraintTop_toBottomOf="@id/topAppBarContainer">
 
         <fragment
-            android:id="@+id/githubUsersNavHostFragment"
+            android:id="@+id/nav_host_github_users_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
