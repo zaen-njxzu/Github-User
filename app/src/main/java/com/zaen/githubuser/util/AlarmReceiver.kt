@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
-import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -98,7 +97,7 @@ class AlarmReceiver : BroadcastReceiver() {
             set(Calendar.MINUTE, 0)
         }
         val df = SimpleDateFormat(TIME_FORMAT, Locale.getDefault())
-        setRepeatingAlarm(context, TYPE_REPEATING, df.format(calendar.time), "Cek user github sekarang!")
+        setRepeatingAlarm(context, TYPE_REPEATING, df.format(calendar.time), "Let's find popular user on Github!")
     }
 
     fun setRepeatingAlarm(context: Context, type: String, time: String, message: String) {
@@ -133,14 +132,6 @@ class AlarmReceiver : BroadcastReceiver() {
         alarmManager.cancel(pendingIntent)
 
         Toast.makeText(context, "Repeating alarm cancelled", Toast.LENGTH_SHORT).show()
-    }
-
-
-    fun isAlarmSet(context: Context, type: String): Boolean {
-        val intent = Intent(context, AlarmReceiver::class.java)
-        val requestCode = if (type.equals(TYPE_ONE_TIME, ignoreCase = true)) ID_ONETIME else ID_REPEATING
-
-        return PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_NO_CREATE) != null
     }
 
     private fun isDateInvalid(date: String, format: String): Boolean {

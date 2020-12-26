@@ -1,11 +1,8 @@
 package com.zaen.githubuser.ui
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 
 import android.view.Menu
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
@@ -17,9 +14,8 @@ import com.zaen.githubuser.R
 import com.zaen.githubuser.db.UserInfoDatabase
 import com.zaen.githubuser.repository.UsersRepository
 import com.zaen.githubuser.util.AlarmReceiver
-import com.zaen.githubuser.util.Constants.Companion.PREFS_NAME
+import com.zaen.githubuser.util.UserPreference
 import kotlinx.android.synthetic.main.activity_github_users.*
-
 
 class GithubUsersActivity : AppCompatActivity() {
 
@@ -31,24 +27,27 @@ class GithubUsersActivity : AppCompatActivity() {
         setContentView(R.layout.activity_github_users)
 
         setSupportActionBar(topAppBar)
+        setupAppbarConfiguration()
+        runOnetimeCodeExecution()
+        setupViewModel()
+    }
+
+    private fun setupViewModel() {
+        val repository = UsersRepository(UserInfoDatabase(this))
+        val githubUsersViewModelProviderFactory = GithubUsersViewModelProviderFactory(application, repository)
+        usersViewModel = ViewModelProvider(this, githubUsersViewModelProviderFactory).get(GithubUsersViewModel::class.java)
+    }
+
+    private fun setupAppbarConfiguration() {
         appBarConfiguration = AppBarConfiguration(setOf(
             R.id.action_favorite, R.id.action_settings))
 
         val navController = findNavController(R.id.nav_host_github_users_fragment)
         setupActionBarWithNavController(navController, appBarConfiguration)
         topAppBar.setupWithNavController(navController)
-
-        runOnetimeCodeExecution()
-
-        val repository = UsersRepository(UserInfoDatabase(this))
-        val githubUsersViewModelProviderFactory = GithubUsersViewModelProviderFactory(application, repository)
-        usersViewModel = ViewModelProvider(this, githubUsersViewModelProviderFactory).get(GithubUsersViewModel::class.java)
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-
 
         val navController = findNavController(R.id.nav_host_github_users_fragment)
         val navOptions = NavOptions.Builder()
@@ -78,15 +77,15 @@ class GithubUsersActivity : AppCompatActivity() {
     }
 
     fun runOnetimeCodeExecution() {
-        val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        if (!prefs.getBoolean("firstTime", false)) {
+        val userPreference = UserPreference(this)
+        userPreference.apply {
+            if(isFirstOpenApp) {
+                val alarmReceiver = AlarmReceiver()
+                alarmReceiver.setRepeatingAlarmOn9AM(this@GithubUsersActivity)
+                isAlarmActive = true
 
-            val alarmReceiver = AlarmReceiver()
-            alarmReceiver.setRepeatingAlarmOn9AM(this)
-
-            val editor = prefs.edit()
-            editor.putBoolean("firstTime", true)
-            editor.commit()
+                isFirstOpenApp = false
+            }
         }
     }
 
