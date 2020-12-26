@@ -9,10 +9,12 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.zaen.githubuser.R
+import com.zaen.githubuser.ui.GithubUsersActivity
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -51,6 +53,12 @@ class AlarmReceiver : BroadcastReceiver() {
         val channelId = "Channel_1"
         val channelName = "AlarmManager channel"
 
+        val intent = Intent(context, GithubUsersActivity::class.java)
+        intent.putExtra(EXTRA_MESSAGE, message)
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        val activity = PendingIntent.getActivity(context, 0, intent, 0)
+
         val notificationManagerCompat = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val builder = NotificationCompat.Builder(context, channelId)
@@ -60,11 +68,9 @@ class AlarmReceiver : BroadcastReceiver() {
             .setColor(ContextCompat.getColor(context, android.R.color.transparent))
             .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
             .setSound(alarmSound)
+            .setContentIntent(activity)
+            .setAutoCancel(true)
 
-        /*
-        Untuk android Oreo ke atas perlu menambahkan notification channel
-        Materi ini akan dibahas lebih lanjut di modul extended
-         */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             /* Create or update. */
@@ -83,14 +89,14 @@ class AlarmReceiver : BroadcastReceiver() {
         val notification = builder.build()
 
         notificationManagerCompat.notify(notifId, notification)
-
     }
 
     fun setRepeatingAlarmOn9AM(context: Context) {
+        cancelAlarm(context, TYPE_REPEATING)
         val calendar: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, 21)
-            set(Calendar.MINUTE, 30)
+            set(Calendar.HOUR_OF_DAY, 9)
+            set(Calendar.MINUTE, 0)
         }
         val df = SimpleDateFormat(TIME_FORMAT, Locale.getDefault())
         setRepeatingAlarm(context, TYPE_REPEATING, df.format(calendar.time), "Cek user github sekarang!")
@@ -103,7 +109,6 @@ class AlarmReceiver : BroadcastReceiver() {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmReceiver::class.java)
         intent.putExtra(EXTRA_MESSAGE, message)
-        val putExtra = intent.putExtra(EXTRA_TYPE, type)
 
         val timeArray = time.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
@@ -128,7 +133,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         alarmManager.cancel(pendingIntent)
 
-        Toast.makeText(context, "Repeating alarm dibatalkan", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Repeating alarm cancelled", Toast.LENGTH_SHORT).show()
     }
 
 
