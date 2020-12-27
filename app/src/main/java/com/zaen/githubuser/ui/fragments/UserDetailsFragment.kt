@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.zaen.githubuser.R
-import com.zaen.githubuser.adapters.FollowAdapter
+import com.zaen.githubuser.viewpager.FollowPagerAdapter
 import com.zaen.githubuser.ui.GithubUsersActivity
 import com.zaen.githubuser.ui.GithubUsersViewModel
 import com.zaen.githubuser.util.FollowStates
@@ -51,7 +51,11 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
 
     private fun attachTabLayout() {
         val screensCount = 2
-        pager.adapter = FollowAdapter(this, screensCount, args.userInfo.username)
+        pager.adapter = FollowPagerAdapter(
+            this,
+            screensCount,
+            args.userInfo.username
+        )
         pager.offscreenPageLimit = screensCount
         pager.currentItem = 0
 

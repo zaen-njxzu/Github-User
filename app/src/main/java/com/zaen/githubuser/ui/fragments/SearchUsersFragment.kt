@@ -16,7 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zaen.githubuser.R
-import com.zaen.githubuser.adapters.UsersAdapter
+import com.zaen.githubuser.adapter.UsersAdapter
 import com.zaen.githubuser.ui.GithubUsersActivity
 import com.zaen.githubuser.ui.GithubUsersViewModel
 import com.zaen.githubuser.util.Constants.Companion.QUERY_PAGE_SIZE

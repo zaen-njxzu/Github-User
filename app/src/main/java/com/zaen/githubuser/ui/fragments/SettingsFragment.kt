@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import com.zaen.githubuser.R
-import com.zaen.githubuser.util.AlarmReceiver
+import com.zaen.githubuser.receiver.AlarmReceiver
 import com.zaen.githubuser.util.UserPreference
 import kotlinx.android.synthetic.main.activity_github_users.*
 import kotlinx.android.synthetic.main.fragment_settings.*

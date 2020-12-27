@@ -1,4 +1,4 @@
-package com.zaen.githubuser.adapters
+package com.zaen.githubuser.adapter
 
 import android.view.LayoutInflater
 import android.view.View

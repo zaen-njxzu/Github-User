@@ -1,4 +1,4 @@
-package com.zaen.githubuser.adapters
+package com.zaen.githubuser.viewpager
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,7 +9,7 @@ import com.zaen.githubuser.ui.fragments.FollowingsFragment
 import com.zaen.githubuser.util.Constants.Companion.FOLLOW_ARG_OBJECT_USERNAME
 import com.zaen.githubuser.util.FollowStates
 
-class FollowAdapter(fragment: Fragment, private val showItemCount: Int, private val username: String) : FragmentStateAdapter(fragment) {
+class FollowPagerAdapter(fragment: Fragment, private val showItemCount: Int, private val username: String) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int {
         return showItemCount

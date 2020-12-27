@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.zaen.githubuser.R
-import com.zaen.githubuser.adapters.UsersAdapter
+import com.zaen.githubuser.adapter.UsersAdapter
 import com.zaen.githubuser.ui.GithubUsersActivity
 import com.zaen.githubuser.ui.GithubUsersViewModel
 import kotlinx.android.synthetic.main.activity_github_users.*

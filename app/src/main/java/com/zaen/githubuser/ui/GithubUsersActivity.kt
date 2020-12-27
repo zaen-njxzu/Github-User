@@ -13,7 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.zaen.githubuser.R
 import com.zaen.githubuser.db.UserInfoDatabase
 import com.zaen.githubuser.repository.UsersRepository
-import com.zaen.githubuser.util.AlarmReceiver
+import com.zaen.githubuser.receiver.AlarmReceiver
 import com.zaen.githubuser.util.UserPreference
 import kotlinx.android.synthetic.main.activity_github_users.*
 
