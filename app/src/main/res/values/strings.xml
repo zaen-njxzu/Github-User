@@ -1,5 +1,20 @@
 <resources>
     <string name="app_name">Github User</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="description_profile_image">Profile Image User Github</string>
+    <string name="description_fab_favorite_btn">Favorite Floating Action Button</string>
+
+    <string name="hint_github_username">Github Username</string>
+
+    <string name="item_user_username">Username</string>
+    <string name="item_user_github_link">Github link</string>
+
+    <string name="user_details_username">Username</string>
+    <string name="user_details_name_field">Name :</string>
+    <string name="user_details_github_field">Github :</string>
+    <string name="user_details_repos_field">Repos :</string>
+    <string name="user_details_created_at_field">From :</string>
+
+    <string name="settings_alarm_nine_am">Alarm: 9:00 AM</string>
+    <string name="settings_switch_alarm_text">OFF</string>
 </resources>

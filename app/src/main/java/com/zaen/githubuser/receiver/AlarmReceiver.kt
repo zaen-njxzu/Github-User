@@ -54,8 +54,8 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val intent = Intent(context, GithubUsersActivity::class.java)
         intent.putExtra(EXTRA_MESSAGE, message)
-        intent.setAction(Intent.ACTION_MAIN);
-        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        intent.action = Intent.ACTION_MAIN
+        intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
         val activity = PendingIntent.getActivity(context, 0, intent, 0)
 
         val notificationManagerCompat = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

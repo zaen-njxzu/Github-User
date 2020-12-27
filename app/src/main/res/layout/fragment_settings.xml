@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Alarm: 9:00 AM"
+        android:text="@string/settings_alarm_nine_am"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="@+id/tvSwitchAlarm"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,14 +22,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
-        android:text="OFF"
+        android:text="@string/settings_switch_alarm_text"
         android:textStyle="bold"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="@id/switchAlarm"
         app:layout_constraintRight_toLeftOf="@id/switchAlarm"
         app:layout_constraintTop_toTopOf="@id/switchAlarm" />
 
-    <Switch
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switchAlarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -10,7 +10,7 @@
         android:id="@+id/etSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Github Username"
+        android:hint="@string/hint_github_username"
         android:imeOptions="actionSearch"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"

@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     val userData: MutableLiveData<List<UserInfo>> = MutableLiveData()
-    lateinit private var usersInfoAdapter: UsersAdapter
+    private lateinit var usersInfoAdapter: UsersAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

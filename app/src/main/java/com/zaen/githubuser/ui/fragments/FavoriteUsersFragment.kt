@@ -18,8 +18,8 @@ import kotlinx.android.synthetic.main.fragment_favorite_users.*
 
 class FavoriteUsersFragment : Fragment(R.layout.fragment_favorite_users) {
 
-    lateinit private var usersViewModel: GithubUsersViewModel
-    lateinit private var usersInfoAdapter: UsersAdapter
+    private lateinit var usersViewModel: GithubUsersViewModel
+    private lateinit var usersInfoAdapter: UsersAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

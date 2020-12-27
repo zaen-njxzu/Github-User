@@ -32,8 +32,8 @@ import kotlinx.coroutines.launch
 
 class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
 
-    lateinit private var usersViewModel: GithubUsersViewModel
-    lateinit private var usersInfoAdapter: UsersAdapter
+    private lateinit var usersViewModel: GithubUsersViewModel
+    private lateinit var usersInfoAdapter: UsersAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -88,7 +88,7 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
         context?.apply {
             val inputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             view?.apply {
-                inputMethodManager.hideSoftInputFromWindow(this.windowToken, 0);
+                inputMethodManager.hideSoftInputFromWindow(this.windowToken, 0)
             }
         }
     }

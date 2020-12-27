@@ -12,8 +12,8 @@ import kotlinx.android.synthetic.main.fragment_base_follow.*
 
 open class BaseFollowFragment : Fragment(R.layout.fragment_base_follow) {
 
-    lateinit protected var usersViewModel: GithubUsersViewModel
-    lateinit protected var followAdapter: UsersAdapter
+    protected lateinit var usersViewModel: GithubUsersViewModel
+    protected lateinit var followAdapter: UsersAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

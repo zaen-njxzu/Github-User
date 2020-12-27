@@ -26,7 +26,7 @@ import java.text.SimpleDateFormat
 
 class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
 
-    lateinit private var usersViewModel: GithubUsersViewModel
+    private lateinit var usersViewModel: GithubUsersViewModel
     private val args: UserDetailsFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
