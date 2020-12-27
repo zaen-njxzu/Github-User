@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/github_users_nav_graph"
+    app:startDestination="@id/searchGithubUsersFragment">
+
+    <fragment
+        android:id="@+id/searchGithubUsersFragment"
+        android:name="com.zaen.githubuser.ui.fragments.SearchUsersFragment"
+        android:label="fragment_search_github_users"
+        tools:layout="@layout/fragment_search_users" >
+        <action
+            android:id="@+id/action_searchGithubUsersFragment_to_githubDetailUserFragment"
+            app:destination="@id/githubDetailUserFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
+    </fragment>
+    <fragment
+        android:id="@+id/githubDetailUserFragment"
+        android:name="com.zaen.githubuser.ui.fragments.UserDetailsFragment"
+        android:label="fragment_github_detail_user"
+        tools:layout="@layout/fragment_user_details" >
+        <argument
+            android:name="user_info"
+            app:argType="com.zaen.githubuser.models.UserInfo" />
+    </fragment>
+    <fragment
+        android:id="@+id/savedUsersFragment"
+        android:name="com.zaen.githubuser.ui.fragments.FavoriteUsersFragment"
+        android:label="fragment_saved_users"
+        tools:layout="@layout/fragment_favorite_users" >
+        <action
+            android:id="@+id/action_savedUsersFragment_to_githubDetailUserFragment"
+            app:destination="@id/githubDetailUserFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.zaen.githubuser.ui.fragments.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>
