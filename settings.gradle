@@ -1,2 +1,4 @@
+include ':ConsumerGHApp'
+include ':ConsumerApp'
 rootProject.name='Github User'
 include ':app'
